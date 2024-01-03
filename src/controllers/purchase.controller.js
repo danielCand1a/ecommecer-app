@@ -15,7 +15,7 @@ const getAll = catchError(async(req, res) => {
     })
     return res.json(purchases)
 });
-const create = catchError(async()=>{
+const create = catchError(async(req, res)=>{
     const cart = await Cart.findAll({
         where:{userId: req.user.id},
         attributes: ['userId', 'productId', 'quantity'],
@@ -23,6 +23,7 @@ const create = catchError(async()=>{
     })
     const purchases = await Purchase.bulkCreate(cart)
     await Cart.destroy({where: {userId: req.user.id}})
+
     return res.json(purchases)
 });
 
